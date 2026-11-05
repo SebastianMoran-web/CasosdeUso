@@ -11,18 +11,18 @@
 <nav class="navbar navbar-dark bg-dark">
 
     <span class="navbar-brand" >GameArena · Panel del administrador</span>
-    <span id="Conexión" class="badge text-bg-secondary">Sin conectar</span>
+    <span id="conexión" class="badge text-bg-secondary">Sin conectar</span>
 
 </nav>
     
 
-<div class="Container my-3">
+<div class="container my-3">
 
     <div id="aviso" role="alert"></div>
 
     <ul class="nav nav-tabs mb-3">
 
-        <li class="nav-item"><button type="button" class=nav-link>Torneo</button></li>
+        <li class="nav-item"><button type="button" class=nav-link>Torneos</button></li>
         <li class="nav-item"><button type="button" class=nav-link>Jugadores</button></li>
         <li class="nav-item"><button type="button" class=nav-link>Videojuegos</button></li>
 
@@ -39,11 +39,11 @@
                    <div class="d-flex justify-content-end align-items-end mb-2">
 
                         <label for="buscarJugadorId" class="form-label">Buscar por ID</label>
-                        <input type="number" id="buscarJugadorId" class="form-label">
+                        <input type="number" id="buscarJugadorId" class="form-control">
+
+                        <button type="button" id="btnBuscarJugador" class="btn btn-outline-primary">Buscar</button>
 
                    </div> 
-
-                   <button type="button" id="btnBuscarJugador" class="btn btn-outline-primary">Buscar</button>
 
                 </div>
 
@@ -71,7 +71,7 @@
                         <!-- GET/jugadores: aqui se pintaran los jugadores -->
                         <!--cada fila lleva 3 botones (a la derecha): Torneos, Editar y Eliminar -->
                         <!-- PUT/jugadores/{id}: boton Editar de cada fila, rellena el formulario y se guarda desde alli -->
-                        <!-- DELTE/jugadores/{id}: boton de Eliminar de cada fila -->
+                        <!-- DELETE/jugadores/{id}: boton de Eliminar de cada fila -->
 
                         
 
@@ -81,7 +81,7 @@
 
             </div>
 
-        </div>
+        
 
         <div class="row g-3">
 
@@ -99,27 +99,28 @@
 
                             <div class="mb-3">
 
-                                <label for="jNick" class="fomr-label">Nick</label>
+                                <label for="jNick" class="form-label">Nick</label>
                                 <input type="text" id="jNick" class="form-control">
 
                             </div>
 
                             <div class="mb-3">
 
-                                <label for="jEmail" class="fomr-label">Email</label>
+                                <label for="jEmail" class="form-label">Email</label>
                                 <input type="text" id="jEmail" class="form-control">
 
                             </div>
 
                             <div class="mb-3">
 
-                                <label for="jNivel" class="fomr-label">Nivel</label>
+                                <label for="jNivel" class="form-label">Nivel</label>
                                 <input type="text" id="jNivel" class="form-control">
 
+                            <button type="submit" id= "btnJugador" class="btn btn-success">Crear Jugador</button>
+                                
 
                             </div>
 
-                            <button typoe="submit" id= "brnJugador" class="btn btn-succes">Crear Jugador</button>
                         </form>
 
                     </div>
@@ -128,10 +129,10 @@
 
             </div>
 
-            <div id="panelTorneoJugador" class="col-ms-6" hidden>
+            <div id="panelTorneosJugador" class="col-md-6" hidden>
                 <div class="card">
                     <div class="card-header">
-                        <h2 id="tituloTorneoJugador" class="h6 mb-0">Torneos del Jugador</h2>
+                        <h2 id="tituloTorneosJugador" class="h6 mb-0">Torneos del Jugador</h2>
 
 
                     </div>
@@ -144,13 +145,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+         </div>
 
-            <div id="tabTorneos" hidden>
+        <div id="tabTorneos" hidden>
 
-                <div class="card mb-3">
+            <div class="card mb-3">
 
-                    <div class="card-header fw-bold">Torneos</div>
-                    <div class="card-body"></div>
+                <div class="card-header fw-bold">Torneos</div>
+                    <div class="card-body">
 
                         <div class="row g-2 align-items-end mb-3">
 
@@ -159,9 +162,9 @@
                                 <select id="filtroEstado" class="form-select">
 
                                     <option value=""></option>
-                                    <option value="Abierto"></option>
-                                    <option value="En_Curso"></option>
-                                    <option value="Finalizado"></option>                                    
+                                    <option value="ABIERTO"></option>
+                                    <option value="EN_CURSO"></option>
+                                    <option value="FINALIZADO"></option>                                    
 
                                 </select>
 
@@ -175,9 +178,9 @@
                                     <option value=""></option>
                                 </select>
                             </div>
-                            <div class="col--md-4">
+                            <div class="col-md-4">
 
-                                <!-- GET/torneo?estado=...&videojuegoId=...: filtrar por estado, por videojuego o por ambos-->
+                                <!-- GET/torneos?estado=...&videojuegoId=...: filtrar por estado, por videojuego o por ambos-->
 
                                 <button type="button" id="btnFiltrarTorneo" class="btn btn-outline-primary">Filtrar</button>
                             </div>
@@ -216,7 +219,7 @@
 
             </div>
 
-        </div>
+        
            <div class="row g-3 mb-3">
  
                 <div class="col-md-6">
@@ -274,7 +277,6 @@
                             <label for="iTorneo" class="form-label">Torneo</label>
                             <select id="iTorneo" class="form-select">
                                 <option value=""></option>
-                                <!-- las opciones salen de la lista de torneos ya cargada, sin petición propia -->
                             </select>
                         </div>
                         <div class="col-md-4">
