@@ -248,6 +248,15 @@
                                         <option value="FINALIZADO">FINALIZADO</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="tFecha" class="form-label">Fecha</label>
+                                    <input type="date" id="tFecha" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tPremio" class="form-label">Premio</label>
+                                    <input type="number" step="0.01" id="tPremio" class="form-control" required>
+                                </div>
+                                
                                 <button type="submit" id="btnTorneo" class="btn btn-success w-100">Crear torneo</button>
                             </form>
                         </div>
@@ -357,6 +366,7 @@
 
 
 
+<script src="app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
