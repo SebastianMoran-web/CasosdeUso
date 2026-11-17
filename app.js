@@ -100,7 +100,8 @@ document.getElementById('btnBuscarJugador').addEventListener('click', async () =
     const id = document.getElementById('buscarJugadorId').value;
     if (!id) return;
     const j = await peticion(`/jugadores/${id}`);
-    document.getElementById('resJugador').innerHTML = `<div class="alert alert-info">Encontrado: [${j.id}] ${j.nick} - ${j.email} (Nivel ${j.nivel})</div>`;
+    document.getElementById('resJugador').innerHTML = 
+    `<div class="alert alert-info">Encontrado: [${j.id}] ${j.nick} ${j.email} (Nivel ${j.nivel})</div>`;
 });
 
 let jugadorEditandoId = null;
@@ -202,11 +203,11 @@ async function cargarTorneos(query = '') {
             <tr>
                 <td>${t.id}</td>
                 <td>${t.nombre}</td>
-                <td>${t.videojuego.nombre}</td>
+                <td>${t.videojuego ? t.videojuego.nombre : 'Sin videojuego'}</td>
                 <td>${t.estado}</td>
                 <td>
                     <button class="btn btn-sm btn-info" onclick="verJugadoresTorneo(${t.id}, '${t.nombre}')">Jugadores</button>
-                    <button class="btn btn-sm btn-warning" onclick="editarTorneo(${t.id}, '${t.nombre}', ${t.videojuego.id}, '${t.estado}', '${t.fecha}', ${t.premio}" >Editar</button>
+                    <button class="btn btn-sm btn-warning" onclick="editarTorneo(${t.id}, '${t.nombre}', ${t.videojuego.id}, '${t.estado}', '${t.fecha}', ${t.premio})">Editar</button>
                     <button class="btn btn-sm btn-danger" onclick="eliminarTorneo(${t.id})">Eliminar</button>
                 </td>
             </tr>`;
@@ -257,7 +258,7 @@ window.editarTorneo = (id, nombre, videojuegoId, estado, fecha, premio) => {
     document.getElementById('tNombre').value = nombre;
     document.getElementById('tVideojuego').value = videojuegoId;
     document.getElementById('tEstado').value = estado;
-    document.getElementById('tFecha').value = fechaa;
+    document.getElementById('tFecha').value = fecha;
     document.getElementById('tPremio').value = premio;
     document.getElementById('btnTorneo').textContent = "Guardar Cambios";
 };
@@ -292,6 +293,53 @@ document.getElementById('formInscripcion').addEventListener('submit', async (e) 
     mostrarAviso("Jugador inscrito correctamente", false);
 });
 
+
+(function () {
+  const pestanas = document.querySelector(".nav-tabs");
+  const botones = () => [...pestanas.querySelectorAll(".nav-link")];
+  const btnInicio = pestanas.querySelector(".item-inicio .nav-link");
+  const inicio = document.getElementById("tabInicio");
+  const otros = ["tabTorneos", "tabJugadores", "tabVideojuegos"].map(id => document.getElementById(id));
+
+  function mostrarInicio() {
+    otros.forEach(p => p.hidden = true);
+    inicio.hidden = false;
+    botones().forEach(b => b.classList.remove("active"));
+    btnInicio.classList.add("active");
+  }
+
+  pestanas.addEventListener("click", e => {
+    const b = e.target.closest(".nav-link");
+    if (!b) return;
+    if (b === btnInicio) { e.stopPropagation(); mostrarInicio(); }
+    else { inicio.hidden = true; btnInicio.classList.remove("active"); }
+  }, true);
+
+  inicio.addEventListener("click", e => {
+    const t = e.target.closest("[data-ir]");
+    if (!t) return;
+    const destino = botones().find(b => b.textContent.trim() === t.dataset.ir);
+    if (destino) destino.click();
+  });
+
+  function contar() {
+    const filas = id => document.querySelectorAll("#" + id + " tr").length;
+    const n = id => filas(id) || "–";
+    document.getElementById("cuentaTorneos").textContent = n("cuerpoTorneos");
+    document.getElementById("cuentaJugadores").textContent = n("cuerpoJugadores");
+    document.getElementById("cuentaJuegos").textContent = n("cuerpoVideojuegos");
+    const abiertos = [...document.querySelectorAll("#cuerpoTorneos tr")]
+      .filter(tr => tr.textContent.includes("ABIERTO")).length;
+    document.getElementById("cuentaAbiertos").textContent = filas("cuerpoTorneos") ? abiertos : "–";
+  }
+  ["cuerpoTorneos", "cuerpoJugadores", "cuerpoVideojuegos"].forEach(id =>
+    new MutationObserver(contar).observe(document.getElementById(id), { childList: true }));
+
+  window.addEventListener("load", () => { mostrarInicio(); contar(); });
+})();
+
 cargarJugadores();
 cargarVideojuegos();
 cargarTorneos();
+
+
